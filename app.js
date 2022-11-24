@@ -8,10 +8,14 @@ const { nextTick } = require('process');
 const Joi = require('joi');
 const { runInNewContext } = require('vm');
 const { validate } = require('./models/campground');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user')
 
 
 const campgrounds = require('./routes/campgrounds');
 const reviews = require('./routes/reviews');
+
 const session = require('express-session');
 const { date } = require('joi');
 const flash = require('connect-flash');
@@ -33,7 +37,6 @@ const app = express();
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-//OVDEEEEEEEEEEEEEEEEE
 app.use(express.urlencoded({ extended: true }))
 //ovo je za uprate U ONOM FORMU KOD EDITA AKO SE OVDE ZOVE _METHOD MORA I TAMO TO JE POVESANO
 app.use(methodOverride('_method'));
@@ -42,7 +45,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 app.use(express.static('public'))
-
 
 const sessionConfig = {
     secret: 'thissougldbebetteeersecret',
@@ -58,6 +60,7 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig));
 app.use(flash());
+
 //kada trazimo url koji ne postoji REDOSLED BITAAN OVO ULAZI SAMO KADA NISTA NIJE NASAO
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
