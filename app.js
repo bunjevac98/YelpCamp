@@ -70,6 +70,8 @@ passport.deserializeUser(User.deserializeUser());
 
 //kada trazimo url koji ne postoji REDOSLED BITAAN OVO ULAZI SAMO KADA NISTA NIJE NASAO
 app.use((req, res, next) => {
+    //nesto nevalja
+    req.session.return = req.originalUrl;
     res.locals.signInUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');

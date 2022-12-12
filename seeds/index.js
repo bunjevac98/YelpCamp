@@ -29,7 +29,9 @@ const seedDB = async () => {
         const price = Math.floor(Math.random() * 20) + 10;
         const camp = new Campground(
             {
+
                 location: `${cities[random1000].city}, ${cities[random1000].state}`,
+                author: '637f68107ebdbc7fc42c0ec7',
                 title: `${sample(descriptors)}, ${sample(places)}`,
                 image: 'https://source.unsplash.com/collection/483251/480x480',
                 description: 'Bilo kakv text samo da je dovoljno dugacak da mozemo da ga stavimo u dva reda tako da ovde apsolutno nema veze sta pise, samo da ne pisu neke gluposti i da ga mozemo pravilno dodavat',

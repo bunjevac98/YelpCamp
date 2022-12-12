@@ -39,8 +39,11 @@ router.get('/login', (req, res) => {
 
 
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login', failureMessage: 'Morate ponovo niste se ulogovali' }), (req, res) => {
-    req.flash('success', 'RADI PERFEKTNO');
-    res.redirect('/campgrounds');
+    req.flash('success', 'Welcome back');
+    //console.log("OVOOOOOOOOOOOOOOOOOOOOOOOO ", req.session.returnTo)
+    const redirectUrl = req.session.vratiSe || '/campgrounds';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
 })
 
 //ima greska mozda
