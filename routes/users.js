@@ -11,13 +11,20 @@ router.get('/register', (req, res) => {
     res.render('users/register');
 })
 
-router.post('/register', catchAsync(async (req, res) => {
+
+router.post('/register', catchAsync(async (req, res, next) => {
     try {
         const { email, username, password } = req.body;
         const user = new User({ email, username });
         const registeredUser = await User.register(user, password);
-        req.flash('success', 'Welcome to YelpCamp');
-        res.redirect('/campgrounds');
+        req.login(registeredUser, err => {
+            if (err) {
+                return next(err);
+            } else {
+                req.flash('success', 'Welcome to YelpCamp');
+                res.redirect('/campgrounds');
+            }
+        })
     } catch (e) {
         req.flash('error', e.message);
         res.redirect('register');
@@ -36,6 +43,22 @@ router.post('/login', passport.authenticate('local', { failureFlash: true, failu
     res.redirect('/campgrounds');
 })
 
-
+//ima greska mozda
+//logout je sada funkcija koja je asinhrona proveriti ovo sta se desava jer je jako komplikovano
+router.get('/logout', catchAsync(async (req, res, next) => {
+    try {
+        const logaut = await req.logout(req.user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            res.redirect('/campgrounds');
+        });
+        req.flash('success', "RADIIIIIIIIIIIII");
+    } catch (e) {
+        console.log(e);
+        req.flash('error', "Nesto ste pogresili");
+        res.redirect('/campgrounds');
+    }
+}))
 
 module.exports = router;

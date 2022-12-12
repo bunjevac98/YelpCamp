@@ -70,19 +70,19 @@ passport.deserializeUser(User.deserializeUser());
 
 //kada trazimo url koji ne postoji REDOSLED BITAAN OVO ULAZI SAMO KADA NISTA NIJE NASAO
 app.use((req, res, next) => {
-    //res.locals.currentUser = req.user;
+    res.locals.signInUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
-
+/*
 app.get('/fakeUser', async (req, res) => {
     const user = new User({ email: 'asdasdasdasdas', username: 'ackosssss' })
     const newUser = await User.register(user, 'chicken');
     res.send(newUser);
 
 })
-
+*/
 
 
 app.use('/', userRoutes)
