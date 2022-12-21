@@ -6,7 +6,9 @@ const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn, validateCmapground, isAuthor } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds')
 const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
+//storage za cloudinary
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 //U RENDER IDE PUTANJA OD EJS KOJI RENDERUJEMO
 //kao sto je u C# Views
@@ -14,12 +16,8 @@ const upload = multer({ dest: 'uploads/' })
 
 router.route('/')
     .get(catchAsync(campgrounds.index))
-    //.post(isLoggedIn, validateCmapground, catchAsync(campgrounds.createCampground));
-    .post(upload.array('image'), (req, res) => {
-        console.log(req.body, req.files);
-        res.send('radiiiiiiiiii')
+    .post(isLoggedIn, upload.array('image'), validateCmapground, catchAsync(campgrounds.createCampground));
 
-    })
 
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)
 
