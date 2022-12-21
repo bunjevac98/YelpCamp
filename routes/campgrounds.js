@@ -5,6 +5,8 @@ const Campground = require('../models/campground');
 const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn, validateCmapground, isAuthor } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds')
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
 //U RENDER IDE PUTANJA OD EJS KOJI RENDERUJEMO
 //kao sto je u C# Views
@@ -12,7 +14,12 @@ const campgrounds = require('../controllers/campgrounds')
 
 router.route('/')
     .get(catchAsync(campgrounds.index))
-    .post(isLoggedIn, validateCmapground, catchAsync(campgrounds.createCampground));
+    //.post(isLoggedIn, validateCmapground, catchAsync(campgrounds.createCampground));
+    .post(upload.array('image'), (req, res) => {
+        console.log(req.body, req.files);
+        res.send('radiiiiiiiiii')
+
+    })
 
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)
 
