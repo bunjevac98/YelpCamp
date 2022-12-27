@@ -9,7 +9,7 @@ const CampgroundSchema = new Schema({
     description: String,
     images: [{
         url: String,
-        __filename: String
+        filename: String
     }
     ],
     author: {

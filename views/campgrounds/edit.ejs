@@ -4,8 +4,8 @@
             Edit Campground
         </h1>
         <div class="col-6 offset-2 mt-5">
-            <form action="/campgrounds/<%=campground._id%>?_method=PUT" novalidate class="validation-form"
-                method="post">
+            <form action="/campgrounds/<%=campground._id%>?_method=PUT" novalidate class="validation-form" method="post"
+                enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" id="title" type="text" name="campground[title]"
@@ -17,9 +17,8 @@
                         value="<%=campground.location%>" placeholder="Location" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="image">Image</label>
-                    <input class="form-control" id="image" type="text" name="campground[image]"
-                        value="<%=campground.image%>" placeholder="Image URL" required>
+                    <label class="form-label" for="image">Add Image</label>
+                    <input type="file" name="image" id="image" multiple>
                 </div>
 
 
@@ -41,6 +40,18 @@
                             value="<%=campground.price%>">
                     </div>
                 </div>
+
+                <div class="mb-3">
+                    <% campground.images.forEach(function (img,i) { %>
+                        <img src="<%= img.url %> " class="img-thumbnail">
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="image-<%i%>">
+                        </div>
+                        <label for="">Delete</label>
+                        <% }) %>
+                </div>
+
+
                 <div class="mb-3">
                     <button type="submit" class="btn btn-info">Update Campground</button>
                 </div>

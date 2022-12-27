@@ -23,7 +23,7 @@ router.get('/new', isLoggedIn, campgrounds.renderNewForm)
 
 router.route('/:id')
     .get(catchAsync(campgrounds.showCampground))
-    .put(isLoggedIn, isAuthor, validateCmapground, catchAsync(campgrounds.upradeCampground))
+    .put(isLoggedIn, isAuthor, upload.array('image'), validateCmapground, catchAsync(campgrounds.upradeCampground))
     .delete(isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampground));
 
 
