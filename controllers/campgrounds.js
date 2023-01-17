@@ -15,20 +15,18 @@ module.exports.renderNewForm = (req, res) => {
 }
 
 module.exports.createCampground = async (req, res, next) => {
+    const campground = new Campground(req.body.campground);
+    campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    campground.author = req.user._id;
     const geoData = await geocoder.forwardGeocode({
         query: req.body.campground.location,
         limit: 1
-    }).send()
-    const campground = new Campground(req.body.campground);
-    campground.geometry = geoData.body.features[0].geometry.coordinates;
-    campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
-    campground.author = req.user._id;
+    }).send();
+    campground.geometry = geoData.body.features[0].geometry;
     await campground.save();
     req.flash('success', 'Successfuly made a new campground!');
     res.redirect(`/campgrounds/${campground._id}`);
 }
-
-
 
 module.exports.showCampground = async (req, res, next) => {
     const campground = await Campground.findById(req.params.id).populate({
@@ -70,6 +68,9 @@ module.exports.upradeCampground = async (req, res) => {
         await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
         console.log(campground)
     }
+
+    console.log(req.files);
+    console.log("UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
     req.flash('success', 'Successfuly updated campground!');
     res.redirect(`/campgrounds/${campground._id}`);
 }
