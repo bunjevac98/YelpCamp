@@ -73,6 +73,11 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
+
+
+
+
+
 //kada trazimo url koji ne postoji REDOSLED BITAAN OVO ULAZI SAMO KADA NISTA NIJE NASAO
 app.use((req, res, next) => {
     //nesto nevalja
@@ -95,6 +100,13 @@ app.get('/fakeUser', async (req, res) => {
 app.use('/', userRoutes)
 app.use('/campgrounds', campgroundsRoutes);
 app.use('/campgrounds/:id/reviews', reviewsRoutes);
+
+app.get('/', (req, res) => {
+    res.render('home')
+});
+
+
+
 
 //flash
 app.all('*', (req, res, next) => {
